@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <style>
+      /* Style for the button */
+      .back-button {
+        font-size: 18px; /* Adjust the font size to make the button bigger */
+        padding: 10px 20px; /* Adjust padding to increase the button's size */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Button to go back to the root route -->
+    <form method="GET" action="/">
+      <button type="submit" class="back-button">Go back to Home</button>
+    </form>
+
+    <br>
+    <h1>Current Users:</h1>
+    <p>Username | Password | Type</p>
+    {% for user in users %}
+        <p>{{user.username}} | {{user.password}} | {{user.type}}</p>
+    {% endfor %}
+    <br><br>
+
+    <h1>Add User:</h1>
+    <form method="POST" action="./data">
+      <input type="text" name="username" placeholder="Username">
+      <input type="text" name="password" placeholder="Password">
+      <input type="text" name="type" placeholder="Type">
+      <input type="submit" value="Add">
+    </form>
+    <br><br>
+
+    <h1>Update User:</h1>
+    {% for user in users %}
+        <form method="POST" action="./data/update">
+          <p>{{user.username}}
+          <input type="hidden" value="{{user.username}}" name="newUsername">
+          <input type="text" value="{{user.password}}" name="newPassword">
+          <input type="text" value="{{user.type}}" name="newType">
+          <input type="submit" value="Update">
+        </form>
+
+        <form method="POST" action="./data/delete">
+            <input type="hidden" value="{{user.username}}" name="delete_user">
+            <input type="submit" value="Delete">
+        </form>
+    {% endfor %}
+
+  </body>
+</html>

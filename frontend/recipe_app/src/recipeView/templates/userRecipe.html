@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <style>
+      /* Style for the button */
+      .back-button {
+        font-size: 18px; /* Adjust the font size to make the button bigger */
+        padding: 10px 20px; /* Adjust padding to increase the button's size */
+      }
+      /* Style for collapsible content */
+      .collapsible {
+        background-color: #eee;
+        color: #444;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        transition: 0.4s;
+      }
+
+      .active, .collapsible:hover {
+        background-color: #ccc;
+      }
+
+      .content {
+        padding: 0 18px;
+        display: none;
+        overflow: hidden;
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Button to go back to the root route -->
+    <form method="GET" action="/">
+      <button type="submit" class="back-button">Go back to Home</button>
+    </form>
+
+    <br>
+    <button class="collapsible"><h1>Current Recipes:</h1></button>
+    <div class="content">
+      {% for userR in userRs %}
+      <button class="collapsible">{{userR.index}}: {{userR.recipe_name}}</button>
+      <div class="content">
+          <p> 
+            <strong>Rating:</strong> {{userR.rating}} <br><br> <strong>Ingredients:</strong> {{userR.ingredients}} <br><br> 
+            <strong>Servings:</strong> {{userR.servings}} <br><br> <strong> Nutrition:</strong> {{userR.nutrition}} <br><br>
+            <strong>Timing:</strong> {{userR.timing}} <br><br> <strong>Directions:</strong> {{userR.directions}}
+          </p>
+      </div>
+      {% endfor %}
+    </div>
+    <br><br>
+
+    <button class="collapsible"><h1>Add Recipe:</h1></button>
+    <div class="content">
+      <form method="POST" action="./recipeU">
+        <input type="text" name="respNameU" placeholder="RecipeName">
+        <input type="text" name="ratingU" placeholder="Rating">
+        <input type="text" name="ingredientsU" placeholder="Ingredients">
+        <input type="text" name="servingsU" placeholder="Servings">
+        <input type="text" name="nutritionU" placeholder="Nutrition">
+        <input type="text" name="timingU" placeholder="Timing">
+        <input type="text" name="directionsU" placeholder="Directions">
+        <input type="submit" value="Add">
+      </form>
+    </div>
+    <br><br>
+
+    <button class="collapsible"><h1>Update Recipe:</h1></button>
+    <div class="content">
+      {% for userR in userRs %}
+          <form method="POST" action="./recipeU/update">
+            <p>{{userR.index}}
+            <input type="hidden" value="{{userR.index}}" name="FindIdxU">
+            <input type="text" value="{{userR.recipe_name}}" name="newRespNameU">
+            <input type="text" value="{{userR.rating}}" name="newRatingU">
+            <input type="text" value="{{userR.ingredients}}" name="newIngredientsU">
+            <input type="text" value="{{userR.servings}}" name="newServingsU">
+            <input type="text" value="{{userR.nutrition}}" name="newNutritionU">
+            <input type="text" value="{{userR.timing}}" name="newTimingU">
+            <input type="text" value="{{userR.directions}}" name="newDirectionsU">
+            <input type="submit" value="Update">
+          </form>
+
+          <form method="POST" action="./recipeU/delete">
+            <input type="hidden" value="{{userR.index}}" name="delete_RecipeU">
+            <input type="submit" value="Delete">
+          </form>
+      {% endfor %}
+    </div>
+
+    <script>
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.display === "block") {
+            content.style.display = "none";
+          } else {
+            content.style.display = "block";
+          }
+        });
+      }
+    </script>
+
+  </body>
+</html>
